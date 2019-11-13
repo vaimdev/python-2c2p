@@ -25,7 +25,7 @@ class twoctwop_redirectapi:
 
         # generate form id
         form_id = ''
-        chars = 'bcdfghjklmnpqrstvwxyz'
+        chars = 'hjklmvnpqbcdwxyzfgrst'
         for i in range(0, 20):
             form_id = '%s%s' % (form_id, chars[random.randint(0, len(chars) - 1)])
 
@@ -40,7 +40,7 @@ class twoctwop_redirectapi:
         return ''.join(html)
 
     def set_value(self, key, value):
-        if key == 'amount':
+        if 'amount' in key:
             value = ('000000000000%s' % str(value))[-12:]
         if key == 'currency':
             value = self._get_currency_id_from_code(value)
@@ -55,6 +55,7 @@ class twoctwop_redirectapi:
             '608': 'PHP',
             '702': 'SGD',
             '764': 'THB',
+            '840': 'USD',
         }[str(id)]
 
     def _get_currency_id_from_code(self, code):
@@ -66,6 +67,7 @@ class twoctwop_redirectapi:
             'PHP': 608,
             'SGD': 702,
             'THB': 764,
+            'USD': 840,
         }[code.upper()]
 
     def _get_request_hash(self):
@@ -124,4 +126,3 @@ class twoctwop_redirectapi:
         ).hexdigest()
 
         return request.POST['hash_value'].lower() == hash.lower()
-
